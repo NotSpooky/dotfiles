@@ -39,5 +39,7 @@ syntax enable
 
 nnoremap ; :
 nnoremap í :! clear && lilyterm<cr>
+cmap qq q!
+cmap ww w !sudo tee %
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set number
