@@ -30,8 +30,16 @@ function chpwd () {
 	ls -a
 }
 
-
-
 setopt menu_complete # Automatically prompts when using tab.
-bindkey 'OA' history-search-backward
-bindkey 'OB' history-search-forward
+autoload -Uz promptinit
+promptinit
+prompt walters
+
+# History searching.
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+export VISUAL="nvim"
