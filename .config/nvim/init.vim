@@ -15,6 +15,7 @@ if dein#load_state('/home/satori/.config/dein')
   call dein#add('/home/satori/.config/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
+  call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
 
@@ -36,10 +37,32 @@ syntax enable
 "endif
 
 "End dein Scripts-------------------------
-
+" Prueba de neosnippet.
+"
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 nnoremap ; :
+nnoremap : :! clear && 
 nnoremap í :! clear && lilyterm<cr>
 cmap qq q!
 cmap ww w !sudo tee %
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
-set number
+set number relativenumber
+function OnHTML ()
+    inoremap Á &Aacute;
+    inoremap É &Eacute;
+    inoremap Í &Iacute;
+    inoremap Ó &Oacute;
+    inoremap Ú &Uacute;
+    inoremap Ü &Uuml;
+    inoremap Ñ &Ntilde;
+    inoremap á &aacute;
+    inoremap é &eacute;
+    inoremap í &iacute;
+    inoremap ó &oacute;
+    inoremap ú &uacute;
+    inoremap ü &uuml;
+    inoremap ñ &ntilde;
+endfunction
+autocmd FileType html :call OnHTML()
