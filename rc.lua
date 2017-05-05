@@ -577,3 +577,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 awful.util.spawn("volumeicon");
 awful.util.spawn("xfce4-power-manager");
 awful.util.spawn("orage");
+awful.util.spawn("compton");
