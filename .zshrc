@@ -1,10 +1,12 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.config/zsh/histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=2000
+SAVEHIST=2000
 unsetopt beep nomatch
 setopt AUTO_CD MENU_COMPLETE HIST_FIND_NO_DUPS 
-bindkey -v
+# Case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# bindkey -v # vi mode
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/satori/.zshrc'
@@ -22,6 +24,7 @@ alias q=exit
 alias -g G='|grep'
 alias -g L='|less'
 alias pc='pcmanfm &!'
+alias temp=sensors
 setopt NO_HUP
 
 # Make cd show all the files.
@@ -42,3 +45,4 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
+export VISUAL="nvim"
