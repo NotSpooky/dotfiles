@@ -578,3 +578,4 @@ awful.util.spawn("volumeicon");
 awful.util.spawn("xfce4-power-manager");
 awful.util.spawn("orage");
 awful.util.spawn("compton");
+awful.util.spawn("xkbcomp -w 0 /home/satori/Utilities/xkbmap $DISPLAY");

@@ -45,10 +45,14 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 nnoremap ; :
 nnoremap : :! clear && 
 nnoremap í :! clear && lilyterm<cr>
+inoremap jk <ESC>
+nnoremap z zA
 cmap qq q!
 cmap ww w !sudo tee %
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set number relativenumber
+set ignorecase smartcase
+set pastetoggle=<F2>
 function OnHTML ()
     inoremap Á &Aacute;
     inoremap É &Eacute;
@@ -65,4 +69,4 @@ function OnHTML ()
     inoremap ü &uuml;
     inoremap ñ &ntilde;
 endfunction
-autocmd FileType html :call OnHTML()
+autocmd FileType html php :call OnHTML()
