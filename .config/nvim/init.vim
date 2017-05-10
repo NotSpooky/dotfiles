@@ -69,4 +69,5 @@ function OnHTML ()
     inoremap ü &uuml;
     inoremap ñ &ntilde;
 endfunction
-autocmd FileType html php :call OnHTML()
+autocmd FileType html :call OnHTML()
+autocmd FileType php :call OnHTML()
