@@ -53,6 +53,7 @@ set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set number relativenumber
 set ignorecase smartcase
 set pastetoggle=<F2>
+set autochdir
 function OnHTML ()
     inoremap Á &Aacute;
     inoremap É &Eacute;
