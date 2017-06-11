@@ -47,6 +47,8 @@ nnoremap : :! clear &&
 nnoremap í :! clear && lilyterm<cr>
 inoremap jk <ESC>
 nnoremap z zA
+nnoremap <C-h> :tabp<CR>
+nnoremap <C-l> :tabn<CR>
 cmap qq q!
 cmap ww w !sudo tee %
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
@@ -54,6 +56,8 @@ set number relativenumber
 set ignorecase smartcase
 set pastetoggle=<F2>
 set autochdir
+set mouse=a
+set colorcolumn=80
 function OnHTML ()
     inoremap Á &Aacute;
     inoremap É &Eacute;
@@ -72,3 +76,6 @@ function OnHTML ()
 endfunction
 autocmd FileType html :call OnHTML()
 autocmd FileType php :call OnHTML()
+" File navigation
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
