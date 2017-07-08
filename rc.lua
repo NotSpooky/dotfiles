@@ -102,7 +102,7 @@ myawesomemenu = {
 
 mymainmenu = awful.menu(
     { items = { 
-        { "Firefox", "firefox --private-window" },
+        { "Firefox", "apulse firefox --private-window" },
         { "Telegram", "/home/satori/Desktop/Telegram/Telegram" },
         { "Archivos", "pcmanfm" },
         { "IRC", "hexchat" },
@@ -578,4 +578,5 @@ awful.util.spawn("volumeicon");
 awful.util.spawn("xfce4-power-manager");
 awful.util.spawn("orage");
 awful.util.spawn("compton");
-awful.util.spawn("xkbcomp -w 0 /home/satori/Utilities/xkbmap $DISPLAY");
+--awful.util.spawn("xkbcomp -w 0 /home/satori/Utilities/xkbmap $DISPLAY");
+awful.util.spawn("xkbcomp /home/satori/Utilities/xkbmap.xkm :0");
