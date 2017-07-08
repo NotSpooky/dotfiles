@@ -4,28 +4,28 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/satori/.config/dein/repos/github.com/Shougo/dein.vim
+" set runtimepath+=/home/satori/.config/dein/repos/github.com/Shougo/dein.vim
 
-" Required:
-if dein#load_state('/home/satori/.config/dein')
-  call dein#begin('/home/satori/.config/dein')
+" " Required:
+ " if dein#load_stest -f /home/satori/Utilities/keyboard.xkb tate('/home/satori/.config/dein')
+  " call dein#begin('/home/satori/.config/dein')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/home/satori/.config/dein/repos/github.com/Shougo/dein.vim')
+  " call dein#add('/home/satori/.config/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
-  call dein#add('Shougo/neocomplete.vim')
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
+  " call dein#add('Shougo/neocomplete.vim')
+  " call dein#add('Shougo/neosnippet.vim')
+  " call dein#add('Shougo/neosnippet-snippets')
 
   " You can specify revision/branch/tag.
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+  " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
   " Required:
-  call dein#end()
-  call dein#save_state()
-endif
+  " call dein#end()
+  " call dein#save_state()
+" endif
 
 " Required:
 filetype plugin indent on
@@ -52,6 +52,7 @@ nnoremap <C-l> :tabn<CR>
 cmap qq q!
 cmap ww w !sudo tee %
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
+set scrolloff=5
 set number relativenumber
 set ignorecase smartcase
 set pastetoggle=<F2>
@@ -79,3 +80,20 @@ autocmd FileType php :call OnHTML()
 " File navigation
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
+" Open directory tree with ñ
+nnoremap ñ :tabe .<CR>
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+" Remember info about open buffers on close
+set viminfo^=% 
+
+" Indent correctly on paste " Need to test if it really works.
+nnoremap <leader>p p
+nnoremap <leader>P P
+nnoremap p p'[v']=
+nnoremap P P'[v']= 
+" I hate ex mode
+map Q <Nop>
