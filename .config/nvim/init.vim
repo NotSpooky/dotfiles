@@ -1,20 +1,26 @@
+if !has('nvim')
+  set encoding=utf8
+endif
+scriptencoding utf8
 "dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
 endif
 
-" Required:
-" set runtimepath+=/home/satori/.config/dein/repos/github.com/Shougo/dein.vim
 
-" " Required:
- " if dein#load_stest -f /home/satori/Utilities/keyboard.xkb tate('/home/satori/.config/dein')
-  " call dein#begin('/home/satori/.config/dein')
+" Required:
+set runtimepath+=/home/satori/.config/dein/repos/github.com/Shougo/dein.vim
+
+" Required:
+if dein#load_state ('/home/satori/.config/dein')
+  call dein#begin('/home/satori/.config/dein')
 
   " Let dein manage dein
   " Required:
-  " call dein#add('/home/satori/.config/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('/home/satori/.config/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
+  call dein#add('easymotion/vim-easymotion')
   " call dein#add('Shougo/neocomplete.vim')
   " call dein#add('Shougo/neosnippet.vim')
   " call dein#add('Shougo/neosnippet-snippets')
@@ -23,9 +29,9 @@ endif
   " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
   " Required:
-  " call dein#end()
-  " call dein#save_state()
-" endif
+  call dein#end()
+  call dein#save_state()
+endif
 
 " Required:
 filetype plugin indent on
@@ -45,7 +51,7 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 nnoremap ; :
 nnoremap : :! clear && 
 nnoremap í :! clear && lilyterm<cr>
-inoremap jk <ESC>
+inoremap , <ESC>
 nnoremap z zA
 nnoremap <C-h> :tabp<CR>
 nnoremap <C-l> :tabn<CR>
@@ -97,3 +103,11 @@ nnoremap p p'[v']=
 nnoremap P P'[v']= 
 " I hate ex mode
 map Q <Nop>
+
+" Easymotion:
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nmap s <Plug>(easymotion-overwin-f)
+" nmap s <Plug>(easymotion-overwin-f2)
+let g:EasyMotion_smartcase = 1
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
