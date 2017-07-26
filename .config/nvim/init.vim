@@ -111,3 +111,8 @@ nmap s <Plug>(easymotion-overwin-f)
 let g:EasyMotion_smartcase = 1
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
+nmap f <Plug>(easymotion-bd-w)
+vmap f <Plug>(easymotion-bd-w)
+" Highlight when using 'f'
+hi EasyMotionShade ctermbg=none ctermfg=blue
+hi EasyMotionTarget2Second ctermbg=none ctermfg=lightred 
