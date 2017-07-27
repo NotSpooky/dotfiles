@@ -21,6 +21,7 @@ if dein#load_state ('/home/satori/.config/dein')
 
   " Add or remove your plugins here:
   call dein#add('easymotion/vim-easymotion')
+  call dein#add('yegappan/mru')
   " call dein#add('Shougo/neocomplete.vim')
   " call dein#add('Shougo/neosnippet.vim')
   " call dein#add('Shougo/neosnippet-snippets')
