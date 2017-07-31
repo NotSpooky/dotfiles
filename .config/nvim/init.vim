@@ -51,8 +51,10 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 nnoremap ; :
 nnoremap : :! clear && 
-nnoremap í :! clear && lilyterm<cr>
-inoremap , <ESC>
+nnoremap í :! clear && lilyterm<CR>
+nnoremap æ :Tex<CR>
+inoremap ð <ESC>
+" Folding
 nnoremap z zA
 nnoremap <C-h> :tabp<CR>
 nnoremap <C-l> :tabn<CR>
@@ -89,7 +91,7 @@ let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 " Open directory tree with ñ
 nnoremap ñ :tabe .<CR>
-" Return to last edit position when opening files (You want this!)
+" Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
@@ -102,18 +104,17 @@ nnoremap <leader>p p
 nnoremap <leader>P P
 nnoremap p p'[v']=
 nnoremap P P'[v']= 
-" I hate ex mode
+" I hate ex mode.
 map Q <Nop>
+" Autocomplete braces.
+inoremap { {<Esc>o<insert>
 
 " Easymotion:
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
-nmap s <Plug>(easymotion-overwin-f)
 " nmap s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_smartcase = 1
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-nmap f <Plug>(easymotion-bd-w)
-vmap f <Plug>(easymotion-bd-w)
+nmap s <Plug>(easymotion-bd-w)
+vmap s <Plug>(easymotion-bd-w)
 " Highlight when using 'f'
 hi EasyMotionShade ctermbg=none ctermfg=blue
 hi EasyMotionTarget2Second ctermbg=none ctermfg=lightred 
