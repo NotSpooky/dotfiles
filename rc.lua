@@ -343,8 +343,11 @@ globalkeys = gears.table.join(
 
     -- Por Nemo
     awful.key({ modkey,     }, "z", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,     }, "F12", function () awful.util.spawn("i3lock -d") end),
-    awful.key({modkey,      }, "F11", function () awful.util.spawn("i3lock -d -i /home/satori/Pictures/sleep3.png; systemctl suspend") end)
+    awful.key({ modkey,     }, "F12", function () awful.util.spawn("i3lock") end),
+    awful.key({ modkey,     }, "F11", function () 
+        awful.util.spawn("systemctl suspend")
+        awful.util.spawn("i3lock")
+    end)
 )
 
 clientkeys = gears.table.join(
