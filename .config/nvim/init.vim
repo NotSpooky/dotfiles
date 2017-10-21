@@ -22,6 +22,8 @@ if dein#load_state ('/home/satori/.config/dein')
   " Add or remove your plugins here:
   call dein#add('easymotion/vim-easymotion')
   call dein#add('yegappan/mru')
+  " call dein#add('Shougo/deoplete.nvim')
+  " call dein#add('landaire/deoplete-d')
   " call dein#add('Shougo/neocomplete.vim')
   " call dein#add('Shougo/neosnippet.vim')
   " call dein#add('Shougo/neosnippet-snippets')
@@ -46,6 +48,8 @@ syntax enable
 "End dein Scripts-------------------------
 " Prueba de neosnippet.
 "
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#d#dcd_server_autostart = 1
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
@@ -107,7 +111,7 @@ nnoremap P P'[v']=
 " I hate ex mode.
 map Q <Nop>
 " Autocomplete braces.
-inoremap { {<Esc>o<insert>
+inoremap { {<CR><insert>
 
 " Easymotion:
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
@@ -117,4 +121,6 @@ nmap s <Plug>(easymotion-bd-w)
 vmap s <Plug>(easymotion-bd-w)
 " Highlight when using 'f'
 hi EasyMotionShade ctermbg=none ctermfg=blue
-hi EasyMotionTarget2Second ctermbg=none ctermfg=lightred 
+hi EasyMotionTarget2Second ctermbg=none ctermfg=black 
+hi EasyMotionTarget2First ctermbg=none ctermfg=red
+cmap dd call jobstart(["firefox", "--private-window", "https://dpldocs.info/"])<LEFT><LEFT><LEFT>
