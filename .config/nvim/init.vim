@@ -57,6 +57,7 @@ nnoremap ; :
 nnoremap : :! clear && 
 nnoremap í :! clear && lilyterm<CR>
 nnoremap æ :Tex<CR>
+nnoremap ö :%s///g<left><left>
 inoremap ð <ESC>
 " Folding
 nnoremap z zA
@@ -111,7 +112,7 @@ nnoremap P P'[v']=
 " I hate ex mode.
 map Q <Nop>
 " Autocomplete braces.
-inoremap { {<CR><insert>
+ inoremap { {<CR>
 
 " Easymotion:
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
