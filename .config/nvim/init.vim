@@ -55,7 +55,7 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 nnoremap ; :
 nnoremap : :! clear && 
-nnoremap í :! clear && lilyterm<CR>
+nnoremap í :! clear && lilyterm<CR><CR>
 nnoremap æ :Tex<CR>
 nnoremap ö :%s///g<left><left>
 inoremap ð <ESC>
@@ -65,6 +65,10 @@ nnoremap <C-h> :tabp<CR>
 nnoremap <C-l> :tabn<CR>
 cmap qq q!
 cmap ww w !sudo tee %
+set hlsearch
+set incsearch
+" Press Space to turn off highlighting and clear any message already displayed.
+nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 set scrolloff=5
 set number relativenumber
@@ -125,3 +129,4 @@ hi EasyMotionShade ctermbg=none ctermfg=blue
 hi EasyMotionTarget2Second ctermbg=none ctermfg=black 
 hi EasyMotionTarget2First ctermbg=none ctermfg=red
 cmap dd call jobstart(["firefox", "--private-window", "https://dpldocs.info/"])<LEFT><LEFT><LEFT>
+
