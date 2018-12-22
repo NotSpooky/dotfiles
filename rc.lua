@@ -311,7 +311,7 @@ globalkeys = gears.table.join(
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
-    awful.key({                    }, "Print", function () awful.with_shell ('maim -s | xclip -selection clipboard -t image/png') end,
+    awful.key({                    }, "Print", function () awful.spawn.with_shell ('maim -s | xclip -selection clipboard -t image/png') end,
               {description = "Take a screenshot"}),
 
     awful.key({ modkey, "Control" }, "n",
