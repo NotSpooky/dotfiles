@@ -1,7 +1,7 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.config/zsh/histfile
-HISTSIZE=2000
-SAVEHIST=2000
+HISTSIZE=3000
+SAVEHIST=3000
 unsetopt beep nomatch
 setopt AUTO_CD MENU_COMPLETE HIST_FIND_NO_DUPS 
 # Case insensitive
@@ -16,14 +16,17 @@ compinit
 # End of lines added by compinstall
 
 alias yolo=sudo
-alias dog=cat
-alias vim=nvim
+# alias vim=nvim
 alias dup='lilyterm &'
 alias vid='mpv --no-video'
+alias vd='mpv --ytdl-format=best'
+alias yt='youtube-dl -F '
+alias ytr='youtube-dl -f'
 alias q=exit
 alias -g G='|grep'
 alias -g L='|less'
-alias pc='pcmanfm &!'
+alias pc='thunar &!'
+alias tmpi='sudo mount -o remount,size=12G /tmp/'
 alias temp=sensors
 setopt NO_HUP
 
@@ -47,4 +50,5 @@ bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;6D" forward-word
-export VISUAL="nvim"
+export VISUAL="vim"
+export EDITOR="/usr/bin/vim" # Also makes the 

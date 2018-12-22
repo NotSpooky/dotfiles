@@ -102,9 +102,9 @@ myawesomemenu = {
 
 mymainmenu = awful.menu(
     { items = { 
-        { "Firefox", "apulse firefox --private-window" },
+        { "Firefox", "firefox --private-window" },
         { "Telegram", "/home/satori/Desktop/Telegram/Telegram" },
-        { "Archivos", "pcmanfm" },
+        { "Archivos", "thunar" },
         { "IRC", "hexchat" },
         { "Terminal", terminal },
         { "Awesome", myawesomemenu, beautiful.awesome_icon }
@@ -295,9 +295,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ modkey, "Shift"    }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    awful.key({ modkey, "Shift"    }, "l",     function () awful.tag.incmwfact( 0.025)          end,
               {description = "increase master width factor", group = "layout"}),
-    awful.key({ modkey, "Shift"    }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    awful.key({ modkey, "Shift"    }, "h",     function () awful.tag.incmwfact(-0.025)          end,
               {description = "decrease master width factor", group = "layout"}),
     --awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
     --          {description = "increase the number of master clients", group = "layout"}),
@@ -311,6 +311,8 @@ globalkeys = gears.table.join(
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
+    awful.key({                    }, "Print", function () awful.with_shell ('maim -s | xclip -selection clipboard -t image/png') end,
+              {description = "Take a screenshot"}),
 
     awful.key({ modkey, "Control" }, "n",
               function ()
@@ -343,10 +345,10 @@ globalkeys = gears.table.join(
 
     -- Por Nemo
     awful.key({ modkey,     }, "z", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Shift" }, "z", function () awful.util.spawn(terminal .. " -e ipython") end),
     awful.key({ modkey,     }, "F12", function () awful.util.spawn("i3lock") end),
     awful.key({ modkey,     }, "F11", function () 
-        awful.util.spawn("systemctl suspend")
-        awful.util.spawn("i3lock")
+        awful.util.spawn("i3lock; sleep 0.15; sudo systemctl suspend")
     end)
 )
 
@@ -522,6 +524,7 @@ client.connect_signal("manage", function (c)
     end
 end)
 
+--[[
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
@@ -563,6 +566,7 @@ client.connect_signal("request::titlebars", function(c)
         layout = wibox.layout.align.horizontal
     }
 end)
+--]]
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
@@ -580,6 +584,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 awful.util.spawn("volumeicon");
 awful.util.spawn("xfce4-power-manager");
 awful.util.spawn("orage");
-awful.util.spawn("compton");
+--awful.util.spawn("compton -b --backend xr_glx_hybrid --vsync-use-glfinish --vsync drm --unredir-if-possible --paint-on-overlay");
+awful.util.spawn("compton --xrender-sync-fence ");
 --awful.util.spawn("xkbcomp -w 0 /home/satori/Utilities/xkbmap $DISPLAY");
 awful.util.spawn("xkbcomp /home/satori/Utilities/xkbmap.xkm :0");
+awful.util.spawn("nm-applet");
+awful.util.spawn("redshift-gtk");
