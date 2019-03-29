@@ -238,11 +238,16 @@ root.buttons(gears.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
+    --awful.button({ }, 8, awful.tag.viewprev),
+    --awful.button({ }, 9,  awful.tag.viewnext)
 ))
 -- }}}
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+
+    --awful.key({ }, 8, awful.tag.viewprev),
+    --awful.key({ }, 9, awful.tag.viewnext),
     --awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
     --          {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "h",   awful.tag.viewprev,
@@ -346,9 +351,9 @@ globalkeys = gears.table.join(
     -- Por Nemo
     awful.key({ modkey,     }, "z", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Shift" }, "z", function () awful.util.spawn(terminal .. " -e ipython") end),
-    awful.key({ modkey,     }, "F12", function () awful.util.spawn("i3lock") end),
-    awful.key({ modkey,     }, "F11", function () 
-        awful.util.spawn("i3lock; sleep 0.15; sudo systemctl suspend")
+    awful.key({ modkey,     }, "F12", function () 
+        awful.util.spawn("i3lock")
+        awful.util.spawn("/usr/bin/sleeper")
     end)
 )
 
@@ -590,3 +595,4 @@ awful.util.spawn("compton --xrender-sync-fence ");
 awful.util.spawn("xkbcomp /home/satori/Utilities/xkbmap.xkm :0");
 awful.util.spawn("nm-applet");
 awful.util.spawn("redshift-gtk");
+awful.util.spawn("xbindkeys");
