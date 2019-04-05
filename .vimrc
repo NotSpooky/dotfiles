@@ -22,7 +22,7 @@ if dein#load_state ('/home/satori/.config/dein')
   " Add or remove your plugins here:
   call dein#add('easymotion/vim-easymotion')
   call dein#add('yegappan/mru')
-  call dein#add('davidhalter/jedi-vim')
+  " call dein#add('davidhalter/jedi-vim')
   " call dein#add('Shougo/deoplete.nvim')
   " call dein#add('landaire/deoplete-d')
   " call dein#add('Shougo/neocomplete.vim')
@@ -80,7 +80,7 @@ set autochdir
 set mouse=a
 set colorcolumn=80
 highlight ColorColumn ctermbg=7
-function OnHTML ()
+" function OnHTML ()
     "inoremap Á &Aacute;
     "inoremap É &Eacute;
     "inoremap Í &Iacute;
@@ -95,14 +95,15 @@ function OnHTML ()
     "inoremap ú &uacute;
     "inoremap ü &uuml;
     "inoremap ñ &ntilde;
-endfunction
-autocmd FileType html :call OnHTML()
-autocmd FileType php :call OnHTML()
+" endfunction
+" autocmd FileType html :call OnHTML()
+" autocmd FileType php :call OnHTML()
 " File navigation
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 " Open directory tree with ñ
 nnoremap ñ :tabe .<CR>
+nnoremap µ :tabe<CR>:MRU<CR>
 " Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
