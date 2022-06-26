@@ -65,6 +65,7 @@
   users.users.satori = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -138,12 +139,14 @@
 	      nnoremap ñ :tabe .<CR>
 	      " I hate ex mode.
 	      map Q <Nop>
+        " For autocomplete
       '';
       packages.nix = with pkgs.vimPlugins; {
         start = [
           easymotion
 	        neomru
 	        asyncomplete-vim
+          Supertab
 	      ];
       };
     };
@@ -181,7 +184,10 @@
       alias pc='nautilus &!';
       alias update='sudo nix-channel update && sudo nixos-rebuild switch';
       alias clean='sudo nix-collect-garbage -d && sudo nixos-rebuild switch';
-      
+      function chpwd() {
+        emulate -L zsh
+        ls -a
+      }
     '';
     setOptions = [
       "AUTO_CD"
@@ -221,4 +227,3 @@
   system.stateVersion = "21.05"; # Did you read the comment?
 
 }
-
