@@ -120,34 +120,82 @@
     vimAlias = true;
     configure = {
       customRC = ''
-	  nnoremap ; :
-          nnoremap : :! clear &&
-	  cmap qq q!
-          cmap ww w !sudo tee %
-	  set hlsearch
-          set incsearch
-	  set expandtab tabstop=2 shiftwidth=2 softtabstop=2
-          set scrolloff=5
-          set number relativenumber
-          set ignorecase smartcase
-          set pastetoggle=<F2>
-          set autochdir
-          set mouse=a
-          set colorcolumn=80
-          highlight ColorColumn ctermbg=7
-	  nnoremap ñ :tabe .<CR>
-	  " I hate ex mode.
-	  map Q <Nop>
+	      nnoremap ; :
+        nnoremap : :! clear && 
+    	  cmap qq q!
+        cmap ww w !sudo tee %
+	      set hlsearch
+        set incsearch
+	      set expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        set scrolloff=5
+        set number relativenumber
+        set ignorecase smartcase
+        set pastetoggle=<F2>
+        set autochdir
+        set mouse=a
+        set colorcolumn=80
+        highlight ColorColumn ctermbg=7
+	      nnoremap ñ :tabe .<CR>
+	      " I hate ex mode.
+	      map Q <Nop>
       '';
       packages.nix = with pkgs.vimPlugins; {
         start = [
           easymotion
-	  neomru
-	  asyncomplete-vim
-	];
+	        neomru
+	        asyncomplete-vim
+	      ];
       };
     };
   };
+
+  programs.zsh = {
+    enable = true;
+    #shellAliases = {
+    #  ll = "ls -l";
+    #  dup = "gnome-terminal --window &!";
+    #  yt = "youtube-dl -F ";
+    #  ytr = "youtube-dl -f";
+    #  q = "exit";
+    #  pc = "nautilus &!";
+    #  update = "sudo nix-channel update && sudo nixos-rebuild switch";
+    #  clean = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch";
+    #};
+    interactiveShellInit = ''
+      # History searching.
+      autoload -U up-line-or-beginning-search
+      autoload -U down-line-or-beginning-search
+      zle -N up-line-or-beginning-search
+      zle -N down-line-or-beginning-search
+      bindkey "^[[A" up-line-or-beginning-search # Up
+      bindkey "^[[B" down-line-or-beginning-search # Down
+      bindkey "^[[1;5D" backward-word
+      bindkey "^[[1;6D" forward-word
+
+      # Shell aliases doesn't seem to be working
+      alias ll='ls -l'
+      alias dup='gnome-terminal --window &!';
+      alias yt='yt-dlp -F ';
+      alias ytf='yt-dlp -f ';
+      alias q='exit';
+      alias pc='nautilus &!';
+      alias update='sudo nix-channel update && sudo nixos-rebuild switch';
+      alias clean='sudo nix-collect-garbage -d && sudo nixos-rebuild switch';
+      
+    '';
+    setOptions = [
+      "AUTO_CD"
+      "MENU_COMPLETE"
+      "HIST_FIND_NO_DUPS"
+      "HIST_IGNORE_DUPS"
+      "SHARE_HISTORY"
+      "HIST_FCNTL_LOCK"
+      "NO_HUP"
+    ];
+    histSize = 10000;
+  };
+
+  users.defaultUserShell = pkgs.zsh;
 
   environment.variables.EDITOR = "nvim";
 
