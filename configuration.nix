@@ -89,8 +89,10 @@
     exfat
     ntfs3g
     ffmpeg
-    bats
     obs-studio
+    nodejs
+    # To enable clipboard support in neovim
+    wl-clipboard
   ];
 
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -139,7 +141,8 @@
 	      nnoremap ñ :tabe .<CR>
 	      " I hate ex mode.
 	      map Q <Nop>
-        " For autocomplete
+        " Copy and paste to the system clipboard by default.
+        set clipboard=unnamedplus
       '';
       packages.nix = with pkgs.vimPlugins; {
         start = [
@@ -181,7 +184,7 @@
       alias yt='yt-dlp -F ';
       alias ytf='yt-dlp -f ';
       alias q='exit';
-      alias pc='nautilus &!';
+      alias pc='nautilus . &!';
       alias update='sudo nix-channel update && sudo nixos-rebuild switch';
       alias clean='sudo nix-collect-garbage -d && sudo nixos-rebuild switch';
       function chpwd() {
