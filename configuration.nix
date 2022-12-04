@@ -73,10 +73,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    eclipses.eclipse-java
+
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     firefox
     youtube-dl
+    yt-dlp
     python3
     git
     dmd
@@ -93,6 +96,7 @@
     nodejs
     # To enable clipboard support in neovim
     wl-clipboard
+    geckodriver
   ];
 
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -125,6 +129,7 @@
       customRC = ''
 	      nnoremap ; :
         nnoremap : :! clear && 
+        nnoremap í :! gnome-terminal --window --working-directory="$PWD"<CR>
     	  cmap qq q!
         cmap ww w !sudo tee %
 	      set hlsearch
@@ -157,16 +162,6 @@
 
   programs.zsh = {
     enable = true;
-    #shellAliases = {
-    #  ll = "ls -l";
-    #  dup = "gnome-terminal --window &!";
-    #  yt = "youtube-dl -F ";
-    #  ytr = "youtube-dl -f";
-    #  q = "exit";
-    #  pc = "nautilus &!";
-    #  update = "sudo nix-channel update && sudo nixos-rebuild switch";
-    #  clean = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch";
-    #};
     interactiveShellInit = ''
       # History searching.
       autoload -U up-line-or-beginning-search
@@ -185,7 +180,8 @@
       alias ytf='yt-dlp -f ';
       alias q='exit';
       alias pc='nautilus . &!';
-      alias update='sudo nix-channel update && sudo nixos-rebuild switch';
+      alias update='sudo nix-channel --update && sudo nixos-rebuild switch --upgrade';
+      alias upgrade='sudo nix-channel --update && sudo nixos-rebuild switch --upgrade';
       alias clean='sudo nix-collect-garbage -d && sudo nixos-rebuild switch';
       function chpwd() {
         emulate -L zsh
