@@ -127,14 +127,17 @@
     vimAlias = true;
     configure = {
       customRC = ''
-	      nnoremap ; :
+        nnoremap ; :
         nnoremap : :! clear && 
         nnoremap í :! gnome-terminal --window --working-directory="$PWD"<CR>
-    	  cmap qq q!
+        " Replace file contents with clipboard
+	nnoremap ö ggdG"+p
+	cmap qq q!
+	" Save as root. Doesn't seem to work well on NixOS :(
         cmap ww w !sudo tee %
-	      set hlsearch
+        set hlsearch
         set incsearch
-	      set expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        set expandtab tabstop=2 shiftwidth=2 softtabstop=2
         set scrolloff=5
         set number relativenumber
         set ignorecase smartcase
@@ -143,9 +146,9 @@
         set mouse=a
         set colorcolumn=80
         highlight ColorColumn ctermbg=7
-	      nnoremap ñ :tabe .<CR>
-	      " I hate ex mode.
-	      map Q <Nop>
+        nnoremap ñ :tabe .<CR>
+        " I hate ex mode.
+        map Q <Nop>
         " Copy and paste to the system clipboard by default.
         set clipboard=unnamedplus
       '';
