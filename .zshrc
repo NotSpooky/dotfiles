@@ -9,7 +9,9 @@ setopt nobeep                                                   # No beep
 setopt appendhistory                                            # Immediately append history instead of overwriting
 setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
 setopt autocd                                                   # if only directory path is entered, cd there.
-chpwd() ls
+chpwd() {
+  ls --color=auto --group-directories-first
+}
 
 export D=/run/media/satori/ExtraLinux450
 export PR="$D/Programming"
@@ -24,11 +26,35 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
 SAVEHIST=500
-export TERMINAL="alacritty"
+export SAM_CLI_TELEMETRY=0
+export TERMINAL="kitty"
+export VIDEO_PLAYER="totem"
+
+vim() {
+  local dir="${PWD}"
+  while [[ "${dir}" != "/" ]]; do
+    if [[ -e "${dir}/.no_plugin" ]]; then
+      echo "Starting Vim without plugins..."
+      command vim -u NONE -U NONE "$@"
+      return
+    fi
+    dir=$(dirname "${dir}")
+  done
+  command vim "$@"
+}
+
 export VISUAL="vim"
 export EDITOR="/usr/bin/vim"
 export FILE_MANAGER="nautilus"                                  # Note: Other file managers might not use the --new-window parameter
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
+
+if WINE="$(which wine)"; then
+  export WINE
+fi
+
+if WINETRICKS="$(which winetricks)"; then
+  export WINETRICKS
+fi
 
 
 ## Keybindings section
@@ -68,6 +94,8 @@ function dup() {
   elif [[ "$TERMINAL" == "alacritty" ]]; then
     $TERMINAL --working-directory . &!
   # Anything else, open the terminal normally
+  elif [[ "$TERMINAL" == "kitty" ]]; then
+    $TERMINAL --directory . &!
   else
     echo "Terminal not recognized, opening without working directory, set it up in .zshrc"
     $TERMINAL -d . &!
@@ -79,25 +107,18 @@ alias cp="cp -i"                                                # Confirm before
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
 alias q='exit'
-alias vid='mpv --no-video'
-alias yt='youtube-dl -F '
-alias ytr='youtube-dl -f'
+alias vid="$VIDEO_PLAYER --no-video"
 alias pc='$FILE_MANAGER --new-window "$PWD" &!'
 alias tmpi='sudo mount -o remount,size=12G /tmp/'
 alias grep='grep  --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias uwu='paru --color=always '
 # alias copy='xclip -selection CLIPBOARD -r'
-function relax() {
-  echo -ne "\033]0;Relax\007"
-  mpv --shuffle "/home/satori/Music/Relaxing"
-}
 
-function ssh2() {
+function ssh() {
   # Workaround for remote computers not coming with the terminfo file for alacritty
   TERM="xterm-256color" /usr/bin/ssh "$@"
 }
 
-function ssh() {
+function ssh2() {
   # A better solution would be to copy the terminal settings to the remote computer
   # Get the user and host from the first argument
   user=$(echo "$1" | cut -d "@" -f 1)
@@ -128,6 +149,80 @@ function copy() {
 
 search-package () {
   paru --color=always -Ss $1 | less
+}
+
+uwu() {
+  if [[ "$1" == "-Ss" ]]; then
+    if [ $# -lt 2 ]; then
+        echo "Expected a search prompt" >&2
+        return 1
+    fi
+    echo "Searching for $2..."
+    command paru --color=always "$@" | less
+  else
+    command paru --color=always "$@"
+  fi
+}
+
+upgrade() {
+    setopt err_exit
+    setopt pipe_fail
+
+    # Check argument count
+    if [[ $# -gt 1 ]]; then
+        echo "Error: Too many arguments. Usage: upgrade [full]" >&2
+        return 1
+    fi
+
+    # Validate argument if present
+    if [[ $# -eq 1 && "$1" != "full" ]]; then
+        echo "Error: Invalid argument. Usage: upgrade [full]" >&2
+        return 1
+    fi
+
+    # If full update requested, run pacman-mirrors
+    if [[ $# -eq 1 && "$1" == "full" ]]; then
+        echo "Updating mirrors..."
+        sudo pacman-mirrors --fasttrack || { echo "Mirror update failed" >&2; return 1; }
+    fi
+
+    echo "Upgrading Flatpak..."
+    flatpak update || { echo "Flatpak update failed" >&2; return 1; }
+
+    echo "Updating packages..."
+    paru -Syyu || { echo "Package update failed" >&2; return 1; }
+
+    # read doesn't work well with set -e, so temporarily disable it
+    setopt no_err_exit
+    read "answer?Would you like to remove previous packages? (Y/n) "
+    setopt err_exit
+
+    if [[ "$answer" =~ ^[Yy]$ || -z "$answer" ]]; then
+        echo "Removing previous packages..."
+        sudo paccache -r || { echo "Package cleanup failed" >&2; return 1; }
+    else
+        echo "Packages were not removed."
+    fi
+
+    setopt no_err_exit
+}
+
+yutubi () {
+    local url="$1"
+    local timestamp=$(date +"%Y%m%d%H%M%S")
+    local output_dir=~/Videos/Youtube
+    local output_file="${output_dir}/${timestamp}.%(ext)s"
+
+    mkdir -p "$output_dir"
+    yt-dlp -o "$output_file" "$url"
+
+    if [[ $? -eq 0 ]]; then
+        local video_file=$(ls "${output_dir}/${timestamp}."*)
+        echo "Command to open the video:"
+        echo "$VIDEO_PLAYER \"$video_file\""
+    else
+        echo "Failed to download the video."
+    fi 
 }
 
 # Theming section  
