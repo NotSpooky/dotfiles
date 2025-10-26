@@ -86,21 +86,23 @@ bindkey '^[[Z' undo                                             # Shift+tab undo
 
 function dup() {
   # Create another instance of the terminal in the same working directory
+  # Note: Output from that terminal is disabled here
 
   # Check if TERMINAL is "cool-retro-term", if so, use the --workdir="$PWD" parameter
   if [[ "$TERMINAL" == "cool-retro-term" ]]; then
-    $TERMINAL --workdir . &!
+    $TERMINAL --workdir . >/dev/null 2>&1 &!
   # If it's alacritty, use --working-directory="$PWD"
   elif [[ "$TERMINAL" == "alacritty" ]]; then
-    $TERMINAL --working-directory . &!
-  # Anything else, open the terminal normally
+    $TERMINAL --working-directory . >/dev/null 2>&1 &!
+  # If it's kitty, use --directory .
   elif [[ "$TERMINAL" == "kitty" ]]; then
-    $TERMINAL --directory . &!
+    $TERMINAL --directory . >/dev/null 2>&1 &!
   else
     echo "Terminal not recognized, opening without working directory, set it up in .zshrc"
-    $TERMINAL -d . &!
+    $TERMINAL -d . >/dev/null 2>&1 &!
   fi
 }
+
 
 ## Alias section 
 alias cp="cp -i"                                                # Confirm before overwriting something
@@ -165,37 +167,72 @@ uwu() {
 }
 
 upgrade() {
-    setopt err_exit
-    setopt pipe_fail
+    emulate -L zsh
+    #setopt localoptions err_exit
+    #setopt localoptions pipe_fail
 
     # Check argument count
     if [[ $# -gt 1 ]]; then
-        echo "Error: Too many arguments. Usage: upgrade [full]" >&2
+        echo "Error: Too many arguments. Usage: upgrade [full|pip|js]" >&2
         return 1
     fi
 
     # Validate argument if present
-    if [[ $# -eq 1 && "$1" != "full" ]]; then
-        echo "Error: Invalid argument. Usage: upgrade [full]" >&2
+    if [[ $# -eq 1 && "$1" != "full" && "$1" != "pip" && "$1" != "js" ]]; then
+        echo "Error: Invalid argument. Usage: upgrade [full|pip|js]" >&2
         return 1
+    fi
+
+    # If 'pip' is specified, upgrade all pip packages (excluding pip itself) and exit
+    if [[ $# -eq 1 && "$1" == "pip" ]]; then
+        echo "Upgrading pip packages (excluding pip itself)..."
+        outdated=$(pip list --outdated --format=columns | tail -n +3 | awk '{print $1}' | grep -v '^pip$' || true)
+        if [[ -n "$outdated" ]]; then
+            echo "$outdated" | xargs -n1 pip install -U || { echo "Pip upgrade failed" >&2; return 1; }
+        else
+            echo "All pip packages are up-to-date."
+        fi
+
+        # 'read' doesn't work well with set -e, so temporarily disable it
+        setopt localoptions no_err_exit
+        read "answer?Would you like to purge the pip cache? (Y/n) "
+        setopt localoptions err_exit
+
+        if [[ "$answer" =~ ^[Yy]$ || -z "$answer" ]]; then
+            echo "Purging the pip cache..."
+            pip cache purge || { echo "Package cleanup failed" >&2; return 1; }
+        else
+            echo "Packages were not removed."
+        fi
+
+        return 0
+    fi
+
+    # If 'js' is specified, update NodeJS packages (npm) in the current directory and exit
+    if [[ $# -eq 1 && "$1" == "js" ]]; then
+        echo "Upgrading NodeJS packages in the current directory..."
+        npm update || { echo "NodeJS packages update failed" >&2; return 1; }
+        return 0
     fi
 
     # If full update requested, run pacman-mirrors
     if [[ $# -eq 1 && "$1" == "full" ]]; then
         echo "Updating mirrors..."
         sudo pacman-mirrors --fasttrack || { echo "Mirror update failed" >&2; return 1; }
+    else
+        echo "Keeping mirrors as-is, to update add 'full' to the command"
     fi
 
     echo "Upgrading Flatpak..."
     flatpak update || { echo "Flatpak update failed" >&2; return 1; }
 
+    setopt localoptions no_err_exit
     echo "Updating packages..."
     paru -Syyu || { echo "Package update failed" >&2; return 1; }
 
-    # read doesn't work well with set -e, so temporarily disable it
-    setopt no_err_exit
+    # 'read' doesn't work well with set -e, so temporarily disable it
     read "answer?Would you like to remove previous packages? (Y/n) "
-    setopt err_exit
+    setopt localoptions err_exit
 
     if [[ "$answer" =~ ^[Yy]$ || -z "$answer" ]]; then
         echo "Removing previous packages..."
@@ -203,8 +240,6 @@ upgrade() {
     else
         echo "Packages were not removed."
     fi
-
-    setopt no_err_exit
 }
 
 yutubi () {
@@ -369,3 +404,10 @@ if ! stty -a | grep -E -q '\berase = \^\?'; then
     # If not, bind ^H to the backspace function
     bindkey '^H' backward-delete-char
 fi
+
+# Activate pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+export PATH=$HOME/.local/bin:$PATH
